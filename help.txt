@@ -1,0 +1,43 @@
+isinstance - проверяет принадлежность объекта к классу
+isinstance(5, int) == True
+
+__dict__ - получает все ЛОКАЛЬНЫЕ атрибуты объекта
+Car.__dict__
+
+getattr - получает значение атрибута класса
+getattr(Car, 'model')
+
+setattr - задает значение атрибуту класса
+setattr(Car, 'model', 'BMV')
+
+
+монотосостояние:
+class Cat:
+    __shared_attr = {
+        'breed': 'pers',
+        'color': 'black',
+    }
+
+    def method(self):
+        self.__dict__ = Cat.__shared_attr
+
+
+property, getter-method, setter-method
+class BankAccount:
+
+    def __init__(self, name, balance):
+        self.name = name
+        self.__balance = balance
+
+    def get_balance(self):
+        return self.__balance
+
+    def set_balance(self, value):
+        if not isinstance(value, (int, float)):
+            raise ValueError('Баланс должен быть числом')
+        self.__balance = value
+
+    def del_balance(self):
+        del self.__balance
+
+    balance = property(fget=get_balance, fset=set_balance, fdel=del_balance)
