@@ -65,3 +65,24 @@ class BankAccount:
     @my_balance.deleter
     def my_balance(self):
         del self.__balance
+
+#Вычисляемые property
+class Square:
+    def __init__(self, s):
+        self.__side = s
+        self.__area = None
+
+    @property
+    def side(self):
+        return self.__side
+
+    @side.setter
+    def side(self, value):
+        self.__side = value
+        self.__area = None
+
+    @property
+    def area(self):
+        if self.__area == None:
+            self.__area = self.__side ** 2
+        return self.__area
