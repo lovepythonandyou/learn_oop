@@ -178,3 +178,84 @@ print(a1._b())
 print(a1._P__a())
 
 
+class UserMail:
+
+    def __init__(self, login, email):
+        self.login = login
+        self._email = email
+
+    def get_email(self):
+        return self._email
+
+    def set_email(self, new_email):
+        if not isinstance(new_email, str):
+            print(f'ErrorMail: {new_email}')
+        else:
+            if new_email.count('@') == 1 and new_email.count('.') == 1:
+                self._email = new_email
+            else:
+                print(f'ErrorMail: {new_email}')
+
+    email = property(fget=get_email, fset=set_email)
+
+
+k = UserMail('bb', 'prince@wait.you')
+print(k.email)
+k.email = [1, 2, 3]
+k.email = 'p@rince@wait.you'
+k.email = 'prince@still.wait'
+print(k.email)
+
+
+class Notebook:
+
+    def __init__(self, some_list):
+        self._notes = some_list
+
+    def notes_list(self):
+        for i, self._notes in enumerate(self._notes):
+            print(f'{i + 1}. {self._notes}')
+
+
+note = Notebook(['flesh', 'adrenalin', 'monster'])
+note.notes_list()
+
+
+class Money:
+
+    def __init__(self, dlrs, cnts):
+        self.total_cents = dlrs * 100 + cnts
+
+    @property
+    def dollars(self):
+        return self.total_cents // 100
+
+    @dollars.setter
+    def dollars(self, value):
+        if isinstance(value, int) and value >= 0:
+            self.total_cents = value * 100 + self.cents
+        else:
+            print('Error dollars')
+
+    @property
+    def cents(self):
+        return self.total_cents % 100
+
+    @cents.setter
+    def cents(self, value):
+        if isinstance(value, int) and 100 > value >= 0:
+            self.total_cents = self.dollars * 100 + value
+        else:
+            print('Error cents')
+
+    def __str__(self):
+        return f'Ваше состояние составляет {self.dollars} долларов {self.cents} центов'
+
+Bill = Money(101, 99)
+print(Bill)
+print(Bill.dollars, Bill.cents)
+print(Bill.total_cents)
+Bill.dollars = 666
+print(Bill)
+Bill.cents = 12
+print(Bill)

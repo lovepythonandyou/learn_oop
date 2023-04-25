@@ -23,6 +23,10 @@ class Cat:
 
 
 property, getter-method, setter-method
+property - эта функция позволяет вам превращать атрибуты класса в свойства или
+управляемые атрибуты. Обычно property называют встроенной функцией. Однако property -
+это класс, предназначенный для работы как функция, а не как обычный класс
+
 class BankAccount:
 
     def __init__(self, name, balance):
@@ -41,3 +45,23 @@ class BankAccount:
         del self.__balance
 
     balance = property(fget=get_balance, fset=set_balance, fdel=del_balance)
+
+class BankAccount:
+
+    def __init__(self, name, balance):
+        self.name = name
+        self.__balance = balance
+
+    @property
+    def my_balance(self):
+        return self.__balance
+
+    @my_balance.setter
+    def my_balance(self, value):
+        if not isinstance(value, (int, float)):
+            raise ValueError('Баланс должен быть числом')
+        self.__balance = value
+
+    @my_balance.deleter
+    def my_balance(self):
+        del self.__balance
