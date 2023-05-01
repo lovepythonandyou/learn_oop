@@ -409,3 +409,93 @@ print(v4)
 v5 = v1 * 2
 print(v5)
 print(v5 + 'hi')
+
+
+class ChessPlayer:
+
+    def __init__(self, name, surname, rating):
+        self.name = name
+        self.surname = surname
+        self.rating = rating
+
+    def __eq__(self, other):
+        if isinstance(other, int):
+            return other == self.rating
+        elif isinstance(other, ChessPlayer):
+            return other.rating == self.rating
+        else:
+            return 'Невозможно выполнить сравнение'
+
+    def __gt__(self, other):
+        if isinstance(other, int):
+            return other < self.rating
+        elif isinstance(other, ChessPlayer):
+            return other.rating < self.rating
+        else:
+            return 'Невозможно выполнить сравнение'
+
+    def __lt__(self, other):
+        if isinstance(other, int):
+            return other > self.rating
+        elif isinstance(other, ChessPlayer):
+            return other.rating > self.rating
+        else:
+            return 'Невозможно выполнить сравнение'
+
+
+magnus = ChessPlayer('Carlson', 'Magnus', 2847)
+ian = ChessPlayer('Ian', 'Nepomniachtchi', 2789)
+print(magnus == 4000)
+print(ian == 2789)
+print(ian == magnus)
+print(magnus > ian)
+print(magnus < ian)
+print(magnus < [1, 2])
+
+
+class City:
+
+    def __init__(self, name_city):
+        name_city_low = name_city.lower()
+        self.name = name_city_low.title()
+
+    def __str__(self):
+        return self.name
+
+    def __bool__(self):
+        return not self.name[-1] in ['a', 'e', 'i', 'o', 'u']
+
+
+p1 = City('new york')
+print(p1)
+print(bool(p1))
+p2 = City('SaN frANCISco')
+print(p2)
+print(p2 == True)
+
+
+class Quadrilaterial:
+
+    def __init__(self, width, heigth=0):
+        self.width = width
+        if heigth == 0:
+            self.heigth = width
+        else:
+            self.heigth = heigth
+
+    def __str__(self):
+        if self.width == self.heigth:
+            return f'Куб размером {self.width}x{self.heigth}'
+        else:
+            return f'Прямоугольник размером {self.width}x{self.heigth}'
+
+    def __bool__(self):
+        return isinstance(self, Quadrilaterial)
+
+
+q1 = Quadrilaterial(10)
+print(q1)
+print(bool(q1))
+q2 = Quadrilaterial(3, 5)
+print(q2)
+print(q2 == True)

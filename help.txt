@@ -131,3 +131,56 @@ str(w) __str__
 #Магические методы __len__ и __abs__
 __len__ - вычисляет длину, не поддерживает отрицательные значения на выходе
 __abs__ - вычисляет значение по модулю
+
+#Магические методы арифметики
+__add__() – для операции сложения
+__sub__() – для операции вычитания
+__mul__() – для операции умножения
+__truediv__() – для операции деления
+
+#Магические методы сравнения
+__eq__ - отвечает за ==
+__ne__ - отвечает за !=
+__lt__ - отвечает за <
+__le__ - отвечает за <=
+__gt__ - отвечает за >
+__ge__ - отвечает за >=
+__eq__ и __hash__ раньше считывали значения по id, теперь при объявлении __eq__ слетает __hash__
+class Point:
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __eq__(self, other):
+        return isinstance(other, Point) and self.x == other.x and self.y == self.y
+
+    def __hash__(self):
+        return hash((self.x, self.y))
+
+
+Чтобы не реализовывать все магические методы сравнения, можно использовать декоратор
+functools.total_ordering, который позволяет сократить код, реализовав только методы __eq__, __lt__
+from functools import total_ordering
+
+@total_ordering
+class Account:
+
+    def __init__(self, balance):
+        self.balance = balance
+
+    def __eq__(self, other):
+        return self.balance == other.balance
+
+    def __lt__(self, other):
+        return self.balance < other.balance
+
+
+acc1 = Account(10)
+acc2 = Account(20)
+print(acc1 > acc2)
+print(acc1 < acc2)
+print(acc1 == acc2)
+print(acc1 != acc2)
+print(acc1 >= acc2)
+print(acc1 <= acc2)
