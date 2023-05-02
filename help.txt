@@ -184,3 +184,25 @@ print(acc1 == acc2)
 print(acc1 != acc2)
 print(acc1 >= acc2)
 print(acc1 <= acc2)
+
+
+#Магический метод __call__
+Реализация метода __call__ нужна, когда мы хотим, чтобы экземпляры класса вели себя как функции.
+А поскольку метод __call__ делает экземпляр вызываемым, мы можем использовать его в качестве декоратора.
+class Storage:
+
+    def __init__(self, func):
+        self.func = func
+
+    def __call__(self, *args, **kwargs):
+        print('Подключение к хранилищу')
+        self.func()
+        print('Отключение от хранилища')
+
+
+@Storage
+def upload_file():
+    print('Загрузка файла..')
+
+
+upload_file()

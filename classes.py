@@ -499,3 +499,61 @@ print(bool(q1))
 q2 = Quadrilaterial(3, 5)
 print(q2)
 print(q2 == True)
+
+class Addition:
+
+    def __call__(self, *args, **kwargs):
+        self.result = 0
+        self.args = list(args)
+        for i in range(len(self.args)):
+            if isinstance(self.args[i], (int, float)):
+                self.result += self.args[i]
+        print(f'Сумма переданных значений = {self.result}')
+
+
+add = Addition()
+
+add(10, 20)
+add(1, 2, 3.4)
+add(1, 2, 'hello', [1, 2], 3)
+
+import time
+
+
+class Timer:
+
+    def __init__(self, func):
+        self.func = func
+
+    def __call__(self, *args, **kwargs):
+        start_time = time.time()
+        self.func()
+        finish_time = time.time()
+        return f'Время работы программы {finish_time - start_time}'
+
+
+@Timer
+def calculate():
+    for i in range(100000000):
+        2 ** 100
+
+
+print(calculate())
+
+
+class UnitedKingdom:
+
+    def capital(self):
+       print('London is the capital of Great Britain.')
+
+    def language(self):
+        print('English is the primary language of Great Britain.')
+
+class Spain:
+
+    def capital(self):
+        print('Madrid is the capital of spain.')
+
+    def language(self):
+        print('Spanish is the primary language of Spain')
+
