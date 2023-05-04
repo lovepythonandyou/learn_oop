@@ -206,3 +206,140 @@ def upload_file():
 
 
 upload_file()
+
+
+#Полиморфизм
+Одна и та же сущность (операция, функция, объект, метод) может использоваться для разных типов.
+
+
+# Магические методы __getitem__, __setitem__, __delitem__ для индексации
+class Vector:
+
+    def __init__(self, *args):
+        self.values = list(args)
+
+    def __repr__(self):
+        return str(self.values)
+
+    def __getitem__(self, item):
+        if 1 <= item <= len(self.values):
+            return self.values[item - 1]
+        else:
+            raise IndexError('Индекс за границами нашей коллекции')
+
+    def __setitem__(self, key, value):
+        if 1 <= key <= len(self.values):
+            self.values[key - 1] = value
+        elif key > len(self.values):
+            diff = key - len(self.values)
+            self.values.extend([None] * diff)
+            self.values[key - 1] = value
+        else:
+            raise IndexError('Индекс за границами нашей коллекции')
+
+    def __delitem__(self, key):
+        if 0 <= key <= len(self.values):
+            del self.values[key]
+        else:
+            raise IndexError('Индекс за границами нашей коллекции')
+
+
+# Магические методы __iter__, __next__
+class Mark:
+
+    def __init__(self, values):
+        self.value = values
+        self.index = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        print('call next mark')
+        if self.index >= len(self.value):
+            self.index = 0
+            raise StopIteration
+        letter = self.value[self.index]
+        self.index += 1
+        return letter
+
+
+class Student:
+
+    def __init__(self, name, surname, marks):
+        self.name = name
+        self.surname = surname
+        self.marks = marks
+
+    def __getitem__(self, item):
+        return self.marks[item]
+
+    def __iter__(self):
+        print('call iter student')
+        self.index = 0
+        return iter(self.marks)
+
+    def __next__(self):
+        if self.index >= len(self.surname):
+            raise StopIteration
+        letter = self.name[self.index]
+        self.index += 1
+        return letter
+
+
+m = Mark([3, 3, 2, 5, 4, 1])
+igor = Student('Igor', 'Ivanov', m)
+for i in igor:
+    print(i)
+
+
+#Наследование
+class A:
+    pass
+
+class B(A):
+    pass
+
+issubclass(B, A) - True
+
+
+
+#Множественное наследование
+class Doctor:
+
+    def __init__(self, degree):
+        self.degree = degree
+
+    def graduete(self):
+        print('Ура, я отучися на доктора')
+
+    def can_build(self):
+        print('Я доктор, я тоже умею строить, но плохо')
+
+
+class Builder:
+
+    def __init__(self, rank):
+        self.rank = rank
+
+    def graduete(self):
+        print('Ура, я отучися на строителя')
+
+    def can_build(self):
+        print('Я строитель, я умею строить')
+
+
+class Person(Builder, Doctor):
+
+    def __init__(self, rank, degree):
+        # self.rank = rank
+        # self.degree = degree
+        super().__init__(rank)
+        Doctor.__init__(self, degree)
+    def __str__(self):
+        return f'Person {self.rank} {self.degree}'
+
+
+s = Person(5, 'spec')
+print(s)
+

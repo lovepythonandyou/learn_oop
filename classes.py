@@ -557,3 +557,257 @@ class Spain:
     def language(self):
         print('Spanish is the primary language of Spain')
 
+
+
+class Building:
+
+    def __init__(self, number_floors):
+        self.number_floors = [None] * number_floors
+
+    def __setitem__(self, key, value):
+        if self.number_floors[key] == None:
+            self.number_floors[key] = value
+
+    def __getitem__(self, item):
+        return self.number_floors[item]
+
+    def __delitem__(self, key):
+        del self.number_floors[key]
+
+
+house1 = Building(22)
+house1[0] = 'Reception'
+house1[1] = 'Cinema'
+house1[2] = 'SPA'
+print(house1[2])
+del house1[2]
+print(house1[2])
+
+
+class PowerTwo:
+
+    def __init__(self, number):
+        self.number = number
+
+    def __iter__(self):
+        self.index = 0
+        return self
+
+    def __next__(self):
+        if self.index <= self.number:
+            result = 2 ** self.index
+            self.index += 1
+            return result
+        else:
+            raise StopIteration
+
+    def __iter__(self):
+        self.count = 0
+        return self
+
+    def __next__(self):
+        result = self.count + 10
+        self.count += 10
+        return result
+
+
+numbers = PowerTwo(2)
+iterator = iter(numbers)
+
+print(next(iterator))
+print(next(iterator))
+print(next(iterator))
+print(next(iterator))
+
+
+class InfinityIterator:
+
+    def __iter__(self):
+        self.count = 0
+        return self
+
+    def __next__(self):
+        result = self.count
+        self.count += 10
+        return result
+
+
+class Vechicle:
+    pass
+
+
+class Car(Vechicle):
+    pass
+
+
+class Plane(Vechicle):
+    pass
+
+
+class Boat(Vechicle):
+    pass
+
+
+class RaceCar(Car):
+    pass
+
+
+class NewInt(int):
+
+    def repeat(self, n=2):
+        return int(str(self) * n)
+
+    def to_bin(self):
+        return int(bin(self)[2:])
+
+
+a = NewInt(9)
+print(a.repeat())
+d = NewInt(a + 5)
+print(d.repeat(3))
+b = NewInt(NewInt(7) * NewInt(5))
+print(b.to_bin())
+
+
+class Transport:
+
+    def __init__(self, brand, max_speed, kind=None):
+        self.brand = brand
+        self.max_speed = max_speed
+        self.kind = kind
+
+    def __str__(self):
+        return f'Тип транспорта {self.kind} марки {self.brand} может развить скорость {self.max_speed} км/час'
+
+
+class Car(Transport):
+
+    def __init__(self, brand, max_speed, mileage, gasoline_residue):
+        super().__init__(brand, max_speed, kind='Car')
+        self.mileage = mileage
+        self.__gasoline_residue = gasoline_residue
+
+    @property
+    def gasoline(self):
+        return f'Осталось бензина на {self.__gasoline_residue} км'
+
+    @gasoline.setter
+    def gasoline(self, value):
+        if not isinstance(value, int):
+            print('Ошибка заправки автомобиля')
+        else:
+            self.__gasoline_residue += value
+            print(f'Объем топлива увеличен на {value} л и составляет {self.__gasoline_residue} л')
+
+
+class Boat(Transport):
+
+    def __init__(self, brand, max_speed, owners_name):
+        super().__init__(brand, max_speed, kind='Boat')
+        self.owners_name = owners_name
+
+    def __str__(self):
+        return f'Этой лодкой марки {self.brand} владеет {self.owners_name}'
+
+
+class Plane(Transport):
+
+    def __init__(self, brand, max_speed, capacity):
+        super().__init__(brand, max_speed, kind='Plane')
+        self.capacity = capacity
+
+    def __str__(self):
+        return f'Самолет марки {self.brand} вмещает в себя {self.capacity} людей'
+
+
+transport = Transport('Telega', 10)
+print(transport)
+bike = Transport('shkolnik', 20, 'bike')
+print(bike)
+
+first_plane = Plane('Virgin Athlantic', 700, 450)
+print(first_plane)
+first_car = Car('BMW', 230, 75000, 300)
+print(first_car)
+print(first_car.gasoline)
+first_car.gasoline = 20
+print(first_car.gasoline)
+second_car = Car('Audi', 230, 70000, 130)
+second_car.gasoline = [None]
+first_boat = Boat('Yamaha', 40, 'Petr')
+print(first_boat)
+
+
+class Initialization:
+
+    def __init__(self, capacity, food):
+        if not isinstance(capacity, int):
+            print('Количество людей должно быть целым числом')
+        else:
+            self.capacity = capacity
+            self.food = food
+
+
+class Vegetarian(Initialization):
+
+    def __init__(self, capacity, food):
+        super().__init__(capacity, food)
+
+    def __str__(self):
+        return f'{self.capacity} людей предпочитают не есть мясо! Они предпочитают {self.food}'
+
+
+class MeatEater(Initialization):
+
+    def __init__(self, capacity, food):
+        super().__init__(capacity, food)
+
+    def __str__(self):
+        return f'{self.capacity} мясоедов в Москве! Помимо мяса они едят еще и {self.food}'
+
+
+class SweetTooth(Initialization):
+
+    def __init__(self, capacity, food):
+        super().__init__(capacity, food)
+
+    def __str__(self):
+        return f'Сладкоежек в Москве {self.capacity}! Их самая любимая еда {self.food}'
+
+    def __eq__(self, other):
+        if isinstance(other, int):
+            return self.capacity == other
+        elif isinstance(other, (Vegetarian, MeatEater)):
+            return self.capacity == other.capacity
+        else:
+            return f'Невозможно сравнить количество сладкоежек с {self.capacity}'
+
+    def __lt__(self, other):
+        if isinstance(other, int):
+            return self.capacity < other
+        elif isinstance(other, (Vegetarian, MeatEater)):
+            return self.capacity < other.capacity
+        else:
+            return f'Невозможно сравнить количество сладкоежек с {self.capacity}'
+
+    def __gt__(self, other):
+        if isinstance(other, int):
+            return self.capacity > other
+        elif isinstance(other, (Vegetarian, MeatEater)):
+            return self.capacity > other.capacity
+        else:
+            return f'Невозможно сравнить количество сладкоежек с {self.capacity}'
+
+
+v_first = Vegetarian(10000, ['Орехи', 'овощи', 'фрукты'])
+print(v_first)
+v_second = Vegetarian([23], ['nothing'])
+m_first = MeatEater(15000, ['Жареную картошку', 'рыба'])
+print(m_first)
+s_first = SweetTooth(30000, ['Мороженное', 'Чипсы', 'ШОКОЛАД'])
+print(s_first)
+print(s_first > v_first)
+print(30000 == s_first)
+print(s_first == 25000)
+print(100000 < s_first)
+print(100 < s_first)
