@@ -122,10 +122,12 @@ class Person:
     def is_adult(self):
         return self.age >= 18
 
+
 person1 = Person('Ivan', 'Ivanov', 17)
 person2 = Person('Eva', 'Ivanova', 20)
 print(person1.full_name(), person1.is_adult())
 print(person2.full_name(), person2.is_adult())
+
 
 class Dog:
     def __init__(self, name, age):
@@ -145,6 +147,7 @@ walt = Dog('Walt', 0.5)
 print(jack.description(), jack.speak('GAAAAAAAAAAAAFF'))
 print(jack.speak('GAV'))
 print(walt.description(), jack.speak('GAFFFFFF'))
+
 
 class Student:
     def __init__(self, name, age, branch):
@@ -251,6 +254,7 @@ class Money:
     def __str__(self):
         return f'Ваше состояние составляет {self.dollars} долларов {self.cents} центов'
 
+
 Bill = Money(101, 99)
 print(Bill)
 print(Bill.dollars, Bill.cents)
@@ -277,6 +281,7 @@ r2 = Rectangle(6, 1)
 
 print(r1.area)
 print(r2.area)
+
 
 class Date:
 
@@ -320,7 +325,6 @@ class Robot:
     @classmethod
     def how_many(cls):
         print(f'Нас осталось столько: {cls.population}')
-
 
 
 r = Robot('terry')
@@ -500,6 +504,7 @@ q2 = Quadrilaterial(3, 5)
 print(q2)
 print(q2 == True)
 
+
 class Addition:
 
     def __call__(self, *args, **kwargs):
@@ -544,10 +549,11 @@ print(calculate())
 class UnitedKingdom:
 
     def capital(self):
-       print('London is the capital of Great Britain.')
+        print('London is the capital of Great Britain.')
 
     def language(self):
         print('English is the primary language of Great Britain.')
+
 
 class Spain:
 
@@ -556,7 +562,6 @@ class Spain:
 
     def language(self):
         print('Spanish is the primary language of Spain')
-
 
 
 class Building:
@@ -811,3 +816,25 @@ print(30000 == s_first)
 print(s_first == 25000)
 print(100000 < s_first)
 print(100 < s_first)
+
+
+class A: pass
+
+
+class B(A): pass
+
+
+class C: pass
+
+
+class D(C): pass
+
+
+class E(B, D): pass
+
+
+def get_mro(cls):
+    print(*[c.__name__ for c in cls.mro()], sep=' -> ')
+
+
+print(E.mro())

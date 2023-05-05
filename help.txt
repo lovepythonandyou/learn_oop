@@ -343,3 +343,64 @@ class Person(Builder, Doctor):
 s = Person(5, 'spec')
 print(s)
 
+
+MRO - nethod resolution order (порядок разрешения методов). Этот порядок относится не только к поискам
+методов, но и к прочим атрибутам класса, так как методы - это частный случай более общего понятия "атрибут"
+Class.mro()
+Данная команда возвращает нам список классов ровно в том порядке, в котором Python будет искать методы в
+иерархии класса пока не найдет нужный или не выдаст ошибку
+def get_mro(cls):
+    print(*[c.__name__ for c in cls.mro()], sep=' -> ')
+Данный список можно получить при помощи функции get_mro
+Когда нельзя линеаризовать?
+class X:pass
+class Y:pass
+class A(X, Y):pass
+class B(Y, X):pass
+class T(A, B):pass
+
+class X: pass
+class Y(X): pass
+class A(X, Y): pass
+
+Итак, у нас на руках есть сам класс, список всех его предков и связей между ними.
+Из этих данных нам нужно построить упорядоченный список классов, в которых будет производиться поиск метода слева направо.
+Такой список называется линеаризацией класса.
+
+
+#Магический метод __slots__
+Преимущества: Ограничивает число аргументов, потребляет меньше памяти за счет отсутствия __dict__, выполняет быстрее операции с экземплярами
+class Point:
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+
+class PointSlots:
+    __slots__ = ('x', 'y')
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+
+def make_cl1():
+    cl1 = Point(3, 4)
+    cl1.x = 100
+    cl1.x
+    del cl1.x
+
+
+def make_cl2():
+    cl2 = PointSlots(3, 4)
+    cl2.x = 100
+    cl2.x
+    del cl2.x
+
+
+print(timeit.timeit(make_cl1))
+print(timeit.timeit(make_cl2))
+p = Point(3, 5)
+ps = PointSlots(5, 6)
+print(p.__sizeof__(), p.__dict__.__sizeof__())
