@@ -838,3 +838,52 @@ def get_mro(cls):
 
 
 print(E.mro())
+
+
+class Wallet:
+
+    def __init__(self, currency, balance):
+        self.balance = balance
+        if not isinstance(currency, str):
+            raise TypeError('Неверный тип валюты')
+        elif len(currency) != 3:
+            raise NameError('Неверная длина названия валюты')
+        elif not currency.isupper():
+            raise ValueError('Название должно состоять только из заглавных букв')
+        else:
+            self.currency = currency
+
+    def __eq__(self, other):
+        if not isinstance(other, Wallet):
+            raise TypeError(f'Wallet не поддерживает сравнение с объектом {other}')
+        elif self.currency != other.currency:
+            raise ValueError('Нельзя сравнивать разные валюты')
+        else:
+            return self.balance == other.balance
+
+    def __add__(self, other):
+        if isinstance(other, Wallet) or self.currency == other.currency:
+            return Wallet(self.currency, self.balance + other.balance)
+        else:
+            raise ValueError('Данная операция запрещена')
+
+    def __sub__(self, other):
+        if isinstance(other, Wallet) or self.currency == other.currency:
+            return Wallet(self.currency, self.balance - other.balance)
+        else:
+            raise ValueError('Данная операция запрещена')
+
+
+wallet1 = Wallet('USD', 50)
+wallet2 = Wallet('RUB', 100)
+wallet3 = Wallet('RUB', 150)
+wallet4 = Wallet(12, 150)
+wallet5 = Wallet('qwerty', 150)
+wallet5 = Wallet('abc', 150)
+print(wallet2 == wallet3)
+print(wallet2 == 100)
+print(wallet2 == wallet1)
+wallet7 = wallet2 + wallet3
+print(wallet7.currency, wallet7.balance)
+wallet2 + 45
+

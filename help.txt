@@ -404,3 +404,26 @@ print(timeit.timeit(make_cl2))
 p = Point(3, 5)
 ps = PointSlots(5, 6)
 print(p.__sizeof__(), p.__dict__.__sizeof__())
+
+
+# Exceptions in Python
+f = open('1.txt')
+try:
+    1 / 5
+except (KeyError, IndexError):
+    print(LookupError)
+else:
+    print('good')
+finally:
+    print('end')
+    f.close()
+
+
+# Инструкция raise
+try:
+    raise ValueError('ошибка значения')
+except ValueError as first:
+    try:
+        raise TypeError('ошибка типа')
+    except TypeError as second:
+        raise Exception('большое исключение') from first/None
